@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from collections import Counter
 from googletrans import Translator
-from random import randint
+from random import randint 
 
 from moviepy.config import change_settings
 
