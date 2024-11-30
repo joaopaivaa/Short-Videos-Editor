@@ -34,15 +34,15 @@ from PIL import Image
 Image.ANTIALIAS = Image.Resampling.LANCZOS
 
 # Listar todos os arquivos na pasta
-video_files = os.listdir('C:\\Users\\joaov\\Documents\\ed video\\Videos')
+video_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Videos')
 
 # Listar todos os arquivos na pasta
-text_files = os.listdir('C:\\Users\\joaov\\Documents\\ed video\\Texts')
+text_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Texts')
 
 for text_file in text_files:
 
     text_array = []
-    with open(f'C:\\Users\\joaov\\Documents\\ed video\\Texts\\{text_file}', 'r', encoding='utf-8') as file:
+    with open(f'C:\\Users\\joaov\\Documents\\Video Editor Project\\Texts\\{text_file}', 'r', encoding='utf-8') as file:
         for line in file:
             text_array.append(line.strip())
 
@@ -84,7 +84,7 @@ for text_file in text_files:
             audio_clips = []
             for i in range(len(text_array)):
                 tts_partial = gTTS(text=text_array[i], lang=lang)
-                audio_file_partial = f"audio_{i}.mp3"
+                audio_file_partial = f"Audios\\audio_{i}.mp3"
                 tts_partial.save(audio_file_partial)
                 audio_partial = AudioFileClip(audio_file_partial)
                 audio_partial = audio_partial.fx(vfx.speedx, 1.4) if language != 'portuguese' else audio_partial.fx(vfx.speedx, 1.6)
@@ -96,14 +96,14 @@ for text_file in text_files:
 
             # Concatenar todos os clipes de áudio
             full_audio = concatenate_audioclips(audio_clips)
-            full_audio.write_audiofile('full_audio.mp3')
+            full_audio.write_audiofile('Audios\\full_audio.mp3')
 
             # 2. Load the audio and get its duration automatically
-            audio = AudioFileClip('full_audio.mp3')
+            audio = AudioFileClip('Audios\\full_audio.mp3')
             duracao_audio = audio.duration  # Audio duration in seconds
 
             video_name = video_files[randint(0, 6)]
-            video_file = f'C:\\Users\\joaov\\Documents\\ed video\\Videos\\{video_name}'
+            video_file = f'C:\\Users\\joaov\\Documents\\Video Editor Project\\Videos\\{video_name}'
             video = VideoFileClip(video_file)
             video = video.resize((1080, 1920))
             video = video.loop(duration=duracao_audio)
