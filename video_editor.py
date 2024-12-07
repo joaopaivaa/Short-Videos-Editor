@@ -13,7 +13,6 @@ from moviepy.config import change_settings
 change_settings({"IMAGEMAGICK_BINARY": r"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"})
 
 import tempfile
-from moviepy.config import change_settings
 
 temp_dir = tempfile.mkdtemp()
 change_settings({"TEMP_DIR": temp_dir})
@@ -33,6 +32,9 @@ from PIL import Image
 # Substituindo ANTIALIAS por LANCZOS
 Image.ANTIALIAS = Image.Resampling.LANCZOS
 
+#subtitles_option = 'Each Word'
+subtitles_option = 'Each Phrase'
+
 # Listar todos os arquivos na pasta
 video_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Videos')
 
@@ -45,8 +47,10 @@ for text_file in text_files:
     with open(f'C:\\Users\\joaov\\Documents\\Video Editor Project\\Texts\\{text_file}', 'r', encoding='utf-8') as file:
         for line in file:
             text_array.append(line.strip())
-
     full_text = " ".join(text_array)
+    
+    if subtitles_option == 'Each Word':
+        text_array = full_text.split(' ')
 
     i = 0
     translator = Translator()
@@ -54,23 +58,24 @@ for text_file in text_files:
 
         try:
 
-            full_text = translator.translate(full_text, dest=languages.get(language)[0]).text if language != 'english' else full_text
+            # full_text = translator.translate(full_text, dest=languages.get(language)[0]).text if language != 'english' else full_text
 
-            words = word_tokenize(full_text.lower())
+            #  = word_tokenize(full_text.lower())
 
-            stop_words = set(stopwords.words(language))
+            # stop_words = set(stopwords.words(language))
 
-            cleaned_words = [word for word in words if word.isalnum() and word not in stop_words]
+            # cleaned_words = [word for word in words if word.isalnum() and word not in stop_words]
 
-            frequency = Counter(cleaned_words)
+            # frequency = Counter(cleaned_words)
 
-            keywords = frequency.most_common(5)
+            # keywords = frequency.most_common(5)
 
-            keywords = [keyword.title() for keyword, freq in keywords]
+            # keywords = [keyword.title() for keyword, freq in keywords]
 
-            text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
+            # text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
 
-            keywords = keywords + ['Quora','Reddit'] + languages.get(language)[1]
+            #keywords = keywords + ['Quora','Reddit'] + languages.get(language)[1]
+            keywords = ['Quora','Reddit'] + languages.get(language)[1]
             keywords.sort()
 
             keywords_final = ''
