@@ -7,6 +7,7 @@ from nltk.tokenize import word_tokenize
 from collections import Counter
 from googletrans import Translator
 from random import randint 
+import pyttsx3
 
 from moviepy.config import change_settings
 
@@ -72,7 +73,7 @@ for text_file in text_files:
 
             # keywords = [keyword.title() for keyword, freq in keywords]
 
-            # text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
+            text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
 
             #keywords = keywords + ['Quora','Reddit'] + languages.get(language)[1]
             keywords = ['Quora','Reddit'] + languages.get(language)[1]
@@ -88,9 +89,18 @@ for text_file in text_files:
             last_duration = 0
             audio_clips = []
             for i in range(len(text_array)):
-                tts_partial = gTTS(text=text_array[i], lang=lang)
                 audio_file_partial = f"Audios\\audio_{i}.mp3"
-                tts_partial.save(audio_file_partial)
+                if language in ['english','portuguese']:
+                    engine = pyttsx3.init()
+                    voices = engine.getProperty('voices')
+                    voice_id = 0 if language == 'portuguese' else 2
+                    engine.setProperty('voice', voices[voice_id].id)
+                    engine.save_to_file(text_array[i], audio_file_partial)
+                    engine.runAndWait()
+                else:
+                    tts_partial = gTTS(text=text_array[i], lang=lang)
+                    tts_partial.save(audio_file_partial)
+
                 audio_partial = AudioFileClip(audio_file_partial)
                 audio_partial = audio_partial.fx(vfx.speedx, 1.4) if language != 'portuguese' else audio_partial.fx(vfx.speedx, 1.6)
                 actual_duration = audio_partial.duration
