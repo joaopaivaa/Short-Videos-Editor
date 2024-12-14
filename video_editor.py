@@ -102,7 +102,8 @@ for text_file in text_files:
                     tts_partial.save(audio_file_partial)
 
                 audio_partial = AudioFileClip(audio_file_partial)
-                audio_partial = audio_partial.fx(vfx.speedx, 1.4) if language != 'portuguese' else audio_partial.fx(vfx.speedx, 1.6)
+                if audio_partial.duration > 60:
+                    audio_partial = audio_partial.fx(vfx.speedx, 1.4) if language != 'portuguese' else audio_partial.fx(vfx.speedx, 1.6)
                 actual_duration = audio_partial.duration
 
                 timestamps.append([last_duration, last_duration + actual_duration, text_array[i]])
