@@ -3,7 +3,7 @@ import os
 import nltk
 from googletrans import Translator
 from random import randint 
-from functions import audio_process, video_process, subtitles_process
+from functions import translate_text, audio_process, video_process, subtitles_process
 
 from moviepy.config import change_settings
 change_settings({"IMAGEMAGICK_BINARY": r"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"})
@@ -21,17 +21,17 @@ from PIL import Image
 # Substituindo ANTIALIAS por LANCZOS
 Image.ANTIALIAS = Image.Resampling.LANCZOS
 
+languages = {'english':['en', '#Quora #Reddit #English #USA #ForYou #FYP #TrendingNow #TikTokUSA #ExplorePage #Explore #TikTok #2024'],
+             'spanish':['es', '#Quora #Reddit #Spanish #Spain #ParaTi #ForYou #FYP #TrendingNow #Descubre #Tendencias #TikTok #2024'],
+             'german':['de', '#Quora #Reddit #German #Germany #ForYou #FYP #TrendingNow #TikTok #Entdecken #TrendsDeutschland #2024'],
+             'portuguese':['pt', '#Quora #Reddit #Portugues #Portuguese #Brazil #Brasil #FYP #TrendingNow #Descubra #TikTok #2024'],
+             'french':['fr', '#Quora #Reddit #French #France #FYP #TrendingNow #Découverte #TendancesFrance #TikTok #2024 #Canada']}
+
 # Listar todos os arquivos na pasta
 video_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Videos')
 
 # Listar todos os arquivos na pasta
 text_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Texts')
-
-languages = {'english':['en', ['English','USA','UK','ForYou','FYP','TrendingNow','TikTokUSA','ExplorePage','Explore','TikTok','2024']],
-             'spanish':['es', ['Spanish','Spain','Europe','ParaTi','ForYou','FYP','TrendingNow','Descubre','Tendencias','TikTok','2024']],
-             'german':['de', ['German','Germany','ForYou','FYP','TrendingNow','TikTok','Entdecken','TrendsDeutschland','2024']],
-             'portuguese':['pt', ['Portugues','Portuguese','Brazil','Brasil','FYP','TrendingNow','Descubra','TikTok','2024']],
-             'french':['fr', ['French','France','Paris','FYP','TrendingNow','Découverte','TendancesFrance','TikTok','2024','Canada']]}
 
 for text_file in text_files:
 
@@ -49,16 +49,7 @@ for text_file in text_files:
 
             lang = languages.get(language)[0]
 
-            # text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
-            from functions import translate_text
             text_array = translate_text(text_array, lang)
-
-            keywords = ['Quora','Reddit'] + languages.get(language)[1]
-            keywords.sort()
-
-            keywords_final = ''
-            for i in range(len(keywords)):
-                keywords_final = keywords_final + ' #' + keywords[i] if i != 0 else keywords_final + '#' + keywords[i]
 
             audio, timestamps = audio_process(text_array, lang)
 
@@ -71,7 +62,7 @@ for text_file in text_files:
             video = CompositeVideoClip([video] + subtitles)
 
             # 7. Export as video
-            video_file = f"{text_file.split('.')[0]} - {language} - {video_name.split('.')[0]}. {keywords_final}.mp4"
+            video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
             video.write_videofile(video_file, fps=24)
 
         except Exception as e:
