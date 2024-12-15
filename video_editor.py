@@ -59,20 +59,6 @@ for text_file in text_files:
 
         try:
 
-            # full_text = translator.translate(full_text, dest=languages.get(language)[0]).text if language != 'english' else full_text
-
-            #  = word_tokenize(full_text.lower())
-
-            # stop_words = set(stopwords.words(language))
-
-            # cleaned_words = [word for word in words if word.isalnum() and word not in stop_words]
-
-            # frequency = Counter(cleaned_words)
-
-            # keywords = frequency.most_common(5)
-
-            # keywords = [keyword.title() for keyword, freq in keywords]
-
             text_array = [translator.translate(line, dest=languages.get(language)[0]).text for line in text_array] if language != 'english' else text_array
 
             #keywords = keywords + ['Quora','Reddit'] + languages.get(language)[1]
