@@ -11,25 +11,28 @@ def audio_process(text_array, lang):
     from gtts import gTTS
     from moviepy.editor import AudioFileClip, vfx, concatenate_audioclips
 
+    lang_voice = {'en': 1,
+                  'es': 3,
+                  'de': 5,
+                  'pt': 0,
+                  'fr': 4}
+
     timestamps = []
     last_duration = 0
     audio_clips = []
     for i in range(len(text_array)):
         audio_file_partial = f"Audios\\audio_{i}.mp3"
-        if lang in ['en','pt']:
-            engine = pyttsx3.init()
-            voices = engine.getProperty('voices')
-            voice_id = 0 if lang == 'pt' else 2
-            engine.setProperty('voice', voices[voice_id].id)
-            engine.save_to_file(text_array[i], audio_file_partial)
-            engine.runAndWait()
-        else:
-            tts_partial = gTTS(text=text_array[i], lang=lang)
-            tts_partial.save(audio_file_partial)
+        engine = pyttsx3.init()
+        voices = engine.getProperty('voices')
+        voice_id = lang_voice.get(lang)
+        engine.setProperty('voice', voices[voice_id].id)
+        engine.save_to_file(text_array[i], audio_file_partial)
+        engine.runAndWait()
+        # tts_partial = gTTS(text=text_array[i], lang=lang)
+        # tts_partial.save(audio_file_partial)
 
         audio_partial = AudioFileClip(audio_file_partial)
-        if audio_partial.duration > 60:
-            audio_partial = audio_partial.fx(vfx.speedx, 1.4) if lang != 'pt' else audio_partial.fx(vfx.speedx, 1.6)
+        # audio_partial = audio_partial.fx(vfx.speedx, 1.2) if lang != 'pt' else audio_partial.fx(vfx.speedx, 1.6)
         actual_duration = audio_partial.duration
 
         timestamps.append([last_duration, last_duration + actual_duration, text_array[i]])
@@ -45,8 +48,6 @@ def audio_process(text_array, lang):
 def video_process(video_name, audio):
 
     from moviepy.editor import vfx, VideoFileClip
-    import os
-    from random import randint
 
     duracao_audio = audio.duration
 
