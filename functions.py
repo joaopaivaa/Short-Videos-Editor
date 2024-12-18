@@ -8,8 +8,7 @@ def translate_text(text_array, lang):
 def audio_process(text_array, lang):
 
     import pyttsx3
-    from gtts import gTTS
-    from moviepy.editor import AudioFileClip, vfx, concatenate_audioclips
+    from moviepy.editor import AudioFileClip, concatenate_audioclips
 
     lang_voice = {'en': 1,
                   'es': 3,
@@ -28,8 +27,6 @@ def audio_process(text_array, lang):
         engine.setProperty('voice', voices[voice_id].id)
         engine.save_to_file(text_array[i], audio_file_partial)
         engine.runAndWait()
-        # tts_partial = gTTS(text=text_array[i], lang=lang)
-        # tts_partial.save(audio_file_partial)
 
         audio_partial = AudioFileClip(audio_file_partial)
         # audio_partial = audio_partial.fx(vfx.speedx, 1.2) if lang != 'pt' else audio_partial.fx(vfx.speedx, 1.6)

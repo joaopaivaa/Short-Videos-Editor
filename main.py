@@ -83,18 +83,5 @@ for text_file in text_files:
                 video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - Part {i+1} of {parts} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
                 video.write_videofile(video_file, fps=24)
 
-            # else:    
-
-            #     video = video_process(video_name, audio)
-
-            #     subtitles = subtitles_process(video, timestamps)
-
-            #     # 6. Combine image and subtitles
-            #     video = CompositeVideoClip([video] + subtitles)
-
-            #     # 7. Export as video
-            #     video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
-            #     video.write_videofile(video_file, fps=24)
-
         except Exception as e:
             print(f"Erro no idioma {language} e arquivo {text_file}: {e}")
