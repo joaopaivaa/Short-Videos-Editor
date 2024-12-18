@@ -4,6 +4,7 @@ import nltk
 from googletrans import Translator
 from random import randint 
 from functions import translate_text, audio_process, video_process, subtitles_process
+import math
 
 from moviepy.config import change_settings
 change_settings({"IMAGEMAGICK_BINARY": r"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"})
@@ -54,16 +55,46 @@ for text_file in text_files:
             audio, timestamps = audio_process(text_array, lang)
 
             video_name = video_files[randint(0, 6)]
-            video = video_process(video_name, audio)
 
-            subtitles = subtitles_process(video, timestamps)
+            # if audio.duration > 90:
 
-            # 6. Combine image and subtitles
-            video = CompositeVideoClip([video] + subtitles)
+            parts = round(audio.duration / 60)
+            part_size = round(len(text_array) / parts)
+            text_arrays = [text_array[i:i + part_size] for i in range(0, len(text_array), part_size)]
 
-            # 7. Export as video
-            video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
-            video.write_videofile(video_file, fps=24)
+            for i in range(parts):
+                
+                if parts > 1:
+                    text_arrays[i][0] + f" (Part {i+1}/{parts})"
+
+                    if i < parts:
+                        text_arrays[i].append(f"Continues in part {i+2}")
+                
+                audio, timestamps = audio_process(text_arrays[i], lang)
+
+                video = video_process(video_name, audio)
+
+                subtitles = subtitles_process(video, timestamps)
+
+                # 6. Combine image and subtitles
+                video = CompositeVideoClip([video] + subtitles)
+
+                # 7. Export as video
+                video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - Part {i+1} of {parts} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
+                video.write_videofile(video_file, fps=24)
+
+            # else:    
+
+            #     video = video_process(video_name, audio)
+
+            #     subtitles = subtitles_process(video, timestamps)
+
+            #     # 6. Combine image and subtitles
+            #     video = CompositeVideoClip([video] + subtitles)
+
+            #     # 7. Export as video
+            #     video_file = f"C:\\Users\\joaov\\Documents\\Video Editor Project\\Finished\\{text_file.split('.')[0]} - {language} - {video_name.split('.')[0]}. {languages.get(language)[1]}.mp4"
+            #     video.write_videofile(video_file, fps=24)
 
         except Exception as e:
             print(f"Erro no idioma {language} e arquivo {text_file}: {e}")
