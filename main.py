@@ -65,10 +65,17 @@ for text_file in text_files:
             for i in range(parts):
                 
                 if parts > 1:
-                    text_arrays[i][0] + f" (Part {i+1}/{parts})"
 
-                    if i < parts:
-                        text_arrays[i].append(f"Continues in part {i+2}")
+                    if i == 0:
+                        first_phrase = text_arrays[i][0]
+                        text_arrays[i][0] += f" (Part {i+1} of {parts})"
+                    else:
+                        text_arrays[i].insert(0, first_phrase + f" (Part {i+1} of {parts})")
+
+                if i < parts-1:
+                    text_arrays[i].append(f"Continues in part {i+2}")
+                else:
+                    text_arrays[i].append(f"Leave a like and follow for more!")
                 
                 audio, timestamps = audio_process(text_arrays[i], lang)
 
