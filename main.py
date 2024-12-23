@@ -22,11 +22,11 @@ from PIL import Image
 # Substituindo ANTIALIAS por LANCZOS
 Image.ANTIALIAS = Image.Resampling.LANCZOS
 
-languages = {'english':['en', '#Quora #Reddit #English #USA #ForYou #FYP #TrendingNow #TikTokUSA #ExplorePage #Explore #TikTok #2024'],
-             'spanish':['es', '#Quora #Reddit #Spanish #Spain #ParaTi #ForYou #FYP #TrendingNow #Descubre #Tendencias #TikTok #2024'],
-             'german':['de', '#Quora #Reddit #German #Germany #ForYou #FYP #TrendingNow #TikTok #Entdecken #TrendsDeutschland #2024'],
-             'portuguese':['pt', '#Quora #Reddit #Portugues #Portuguese #Brazil #Brasil #FYP #TrendingNow #Descubra #TikTok #2024'],
-             'french':['fr', '#Quora #Reddit #French #France #FYP #TrendingNow #Découverte #TendancesFrance #TikTok #2024 #Canada']}
+languages = {'english':['en', '#Quora #Reddit #English #USA #ForYou #FYP #TrendingNow #TikTokUSA #ExplorePage #Explore #TikTok #2024']}
+            #  'spanish':['es', '#Quora #Reddit #Spanish #Spain #ParaTi #ForYou #FYP #TrendingNow #Descubre #Tendencias #TikTok #2024'],
+            #  'german':['de', '#Quora #Reddit #German #Germany #ForYou #FYP #TrendingNow #TikTok #Entdecken #TrendsDeutschland #2024'],
+            #  'portuguese':['pt', '#Quora #Reddit #Portugues #Portuguese #Brazil #Brasil #FYP #TrendingNow #Descubra #TikTok #2024'],
+            #  'french':['fr', '#Quora #Reddit #French #France #FYP #TrendingNow #Découverte #TendancesFrance #TikTok #2024 #Canada']}
 
 # Listar todos os arquivos na pasta
 video_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Videos')
@@ -56,9 +56,10 @@ for text_file in text_files:
 
             video_name = video_files[randint(0, 6)]
 
-            # if audio.duration > 90:
-
-            parts = round(audio.duration / 60)
+            if audio.duration > 60:
+                parts = round(audio.duration / 60)
+            else:
+                parts = 1
             part_size = round(len(text_array) / parts)
             text_arrays = [text_array[i:i + part_size] for i in range(0, len(text_array), part_size)]
 

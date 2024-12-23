@@ -1,9 +1,11 @@
 from googletrans import Translator
 
+
 def translate_text(text_array, lang):
     translator = Translator()
     text_array = [translator.translate(line, dest=lang).text for line in text_array] if lang != 'en' else text_array
     return text_array
+
 
 def audio_process(text_array, lang):
 
@@ -42,6 +44,7 @@ def audio_process(text_array, lang):
 
     return full_audio, timestamps
 
+
 def video_process(video_name, audio):
 
     from moviepy.editor import vfx, VideoFileClip
@@ -59,6 +62,7 @@ def video_process(video_name, audio):
     video = video.fx(vfx.fadeout, 1)
 
     return video
+
 
 def subtitles_process(video, timestamps):
 
