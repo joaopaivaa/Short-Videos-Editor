@@ -4,7 +4,7 @@ import nltk
 from googletrans import Translator
 from random import randint 
 from functions import translate_text, audio_process, video_process, subtitles_process
-import math
+import re
 
 from moviepy.config import change_settings
 change_settings({"IMAGEMAGICK_BINARY": r"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"})
@@ -22,7 +22,7 @@ from PIL import Image
 # Substituindo ANTIALIAS por LANCZOS
 Image.ANTIALIAS = Image.Resampling.LANCZOS
 
-languages = {'english':['en', '#Quora #Reddit #English #USA #ForYou #FYP #TrendingNow #TikTokUSA #ExplorePage #Explore #TikTok #2024']}
+languages = {'english':['en', '#Quora #Reddit #ForYou #FYP #TrendingNow #Viral']}
             #  'spanish':['es', '#Quora #Reddit #Spanish #Spain #ParaTi #ForYou #FYP #TrendingNow #Descubre #Tendencias #TikTok #2024'],
             #  'german':['de', '#Quora #Reddit #German #Germany #ForYou #FYP #TrendingNow #TikTok #Entdecken #TrendsDeutschland #2024'],
             #  'portuguese':['pt', '#Quora #Reddit #Portugues #Portuguese #Brazil #Brasil #FYP #TrendingNow #Descubra #TikTok #2024'],
@@ -36,11 +36,17 @@ text_files = os.listdir('C:\\Users\\joaov\\Documents\\Video Editor Project\\Text
 
 for text_file in text_files:
 
-    text_array = []
+    # text_array = []
+    
     with open(f'C:\\Users\\joaov\\Documents\\Video Editor Project\\Texts\\{text_file}', 'r', encoding='utf-8') as file:
-        for line in file:
-            text_array.append(line.strip())
-    full_text = " ".join(text_array)
+        full_text = file.read()
+        full_text = full_text.replace('\n', ' ')
+        text_array = re.split(r'(?<=[.,!?])', full_text)
+        text_array = [sentence.strip() for sentence in text_array if sentence.strip()]
+
+    #     for line in file:
+    #         text_array.append(line.strip())
+    # full_text = " ".join(text_array)
 
     i = 0
     translator = Translator()
