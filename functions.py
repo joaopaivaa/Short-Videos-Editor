@@ -1,9 +1,12 @@
 from googletrans import Translator
 
 
-def translate_text(text_array, lang):
+async def translate_text(text_array, lang):
     translator = Translator()
-    text_array = [translator.translate(line, dest=lang).text for line in text_array] if lang != 'en' else text_array
+    if lang != 'en':
+        for i, line in enumerate(text_array):
+            translated_line = await translator.translate(line, dest=lang)
+            text_array[i] = translated_line.text
     return text_array
 
 
